@@ -4,6 +4,9 @@ require 'savon'
 
 enable :sessions
 
+Dir["#{Dir.pwd}/services/bps/service/*.rb"].each {|f| require f}
+
+
 configure do
   set :bind, '0.0.0.0'
   set :session_secret, 'a secret'
@@ -18,10 +21,9 @@ get '/accounts' do
   content_type :json
   session['customer_id'] = '0001715094' unless session.key? 'customer_id'
 
-  require_relative 'services/bps/online_trading'
-  service = Services::BPS::OnlineTrading.instance
+  service = BPS::Service::GetAccounts.instance
 
-  accounts = service.call :get_accounts, customerId: session['customer_id']
+  accounts = service.execute session['customer_id']
 
   accounts.to_json
 end

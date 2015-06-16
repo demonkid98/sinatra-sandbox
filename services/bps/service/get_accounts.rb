@@ -1,12 +1,17 @@
 require 'logger'
-require 'singleton'
 require_relative './base'
+require_relative '../client/online_trading'
 
-class Services::BPS::OnlineTrading < Services::BPS::Base
-  include Singleton
-
+class BPS::Service::GetAccounts < BPS::Service::Base
   def initialize
-    super 'http://10.26.53.91/BOProxyServiceNew/OnlineTradingService.asmx?wsdl'
+    super(BPS::Client::OnlineTrading.instance)
+  end
+
+  def execute(customer_id)
+    response = client.call :get_accounts, customerId: customer_id
+    raise StandardError.new(status(response)[:message]) unless ok? response
+    parse response
+
   end
 
   def result(response)
