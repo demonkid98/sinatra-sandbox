@@ -23,9 +23,17 @@ get '/accounts' do
 
   service = BPS::Service::GetAccounts.instance
 
-  accounts = service.execute session['customer_id']
+  service.execute(session['customer_id']).to_json
+end
 
-  accounts.to_json
+get '/accounts/:account_number/portfolio' do
+  content_type :json
+
+  # TODO before_filter to check if account belongs to customer
+
+  service = BPS::Service::GetPortfolios.instance
+
+  service.execute(params[:account_number]).to_json
 end
 
 error StandardError do |e|

@@ -5,10 +5,11 @@ module BPS
     class Base
       include Singleton
 
-      attr_reader :client
+      attr_reader :client, :logger
 
       def initialize(client)
         @client = client
+        @logger = Logger.new STDOUT
       end
 
       def ok?(response)

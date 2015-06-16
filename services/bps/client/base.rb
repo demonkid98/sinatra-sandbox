@@ -1,5 +1,6 @@
 require 'savon'
 require 'singleton'
+require 'logger'
 
 module BPS
   module Client
@@ -10,6 +11,7 @@ module BPS
 
       def initialize(url)
         @client = Savon.client(wsdl: url)
+        @logger = Logger.new STDOUT
       end
 
       def call(method, params)

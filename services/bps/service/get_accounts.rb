@@ -1,10 +1,9 @@
-require 'logger'
 require_relative './base'
 require_relative '../client/online_trading'
 
 class BPS::Service::GetAccounts < BPS::Service::Base
   def initialize
-    super(BPS::Client::OnlineTrading.instance)
+    super BPS::Client::OnlineTrading.instance
   end
 
   def execute(customer_id)
@@ -21,7 +20,11 @@ class BPS::Service::GetAccounts < BPS::Service::Base
   def parse(response)
     begin
       result(response)[:get_accounts][:account].map do |account|
-        account.select { |k, v| %i(account_number cash_available net_account_value purchase_power).include? k }
+        account.select! do |k, v|
+          %i(account_number cash_available net_account_value purchase_power real_money).include? k
+        end.each do |k, v|
+          account[k] = v.to_f if %i(cash_available net_account_value purchase_power real_money).include? k
+        end
       end
     rescue NoMethodError => e
       logger.error e

@@ -4,7 +4,7 @@ require 'rspec'
 
 SimpleCov.start
 
-require File.expand_path '../../app.rb', __FILE__
+require_relative '../app'
 
 ENV['RACK_ENV'] = 'test'
 
