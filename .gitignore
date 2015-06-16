@@ -3,3 +3,4 @@ tmp/
 Thumbs.db
 .DS_STORE
 folder.ini
+*.sublime-*
