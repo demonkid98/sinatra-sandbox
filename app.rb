@@ -5,6 +5,7 @@ require 'savon'
 enable :sessions
 
 configure do
+  set :bind, '0.0.0.0'
   set :session_secret, 'a secret'
   set :show_exceptions, :after_handler
 end
