@@ -18,7 +18,7 @@ get '/accounts' do
   session['customer_id'] = '0001715094' unless session.key? 'customer_id'
 
   require_relative 'services/bps/online_trading'
-  service = Services::BPS::OnlineTrading.new
+  service = Services::BPS::OnlineTrading.instance
 
   accounts = service.call :get_accounts, customerId: session['customer_id']
 
