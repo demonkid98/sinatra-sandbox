@@ -25,11 +25,6 @@ class BPS::Service::GetPortfolios < BPS::Service::Base
         end.each do |k, v|
           sec[k] = v.to_f if %i(cost_price current_price quantity).include? k
         end
-        sec[:cost_value] = sec[:cost_price] * sec[:quantity]
-        sec[:market_value] = sec[:current_price] * sec[:quantity]
-        sec[:gain_loss] = sec[:market_value] - sec[:cost_value]
-        sec[:gain_loss_ratio] = sec[:cost_value] != 0 ? sec[:gain_loss] / sec[:cost_value] : 0
-        sec
       end
     rescue NoMethodError => e
       logger.error e

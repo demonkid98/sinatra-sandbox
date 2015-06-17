@@ -37,20 +37,5 @@ describe 'GetPortfolios service' do
       expect(item[:quantity]).to be_kind_of Numeric
       expect(item[:symbol]).to be_kind_of String
     end
-
-    it 'adds several keys to result array member' do
-      response = @service.execute '0001032424'
-      expect(response.length).to be > 0
-
-      item = response[0]
-      expect(item).to have_key :cost_value
-      expect(item).to have_key :market_value
-      expect(item).to have_key :gain_loss
-      expect(item).to have_key :gain_loss_ratio
-
-      expect(item[:cost_value]).to be_within(1e-6).of item[:quantity] * item[:cost_price]
-      expect(item[:market_value]).to be_within(1e-6).of item[:quantity] * item[:current_price]
-      expect(item[:gain_loss]).to be_within(1e-6).of item[:market_value] - item[:cost_value]
-    end
   end
 end
