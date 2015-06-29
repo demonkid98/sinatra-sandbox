@@ -5,6 +5,7 @@ require 'savon'
 enable :sessions
 
 Dir["#{Dir.pwd}/services/bps/service/*.rb"].each {|f| require f}
+Dir["#{Dir.pwd}/services/ws/service/*.rb"].each {|f| require f}
 
 
 configure do
@@ -34,6 +35,17 @@ get '/accounts/:account_number/portfolio' do
   service = BPS::Service::GetPortfolios.instance
 
   service.execute(params[:account_number]).to_json
+  # TODO token generation
+end
+
+post '/auth' do
+  content_type :json
+  request.body.rewind
+  @payload = JSON.parse request.body.read
+
+  service = WS::Service::Auth.instance
+
+  service.execute(@payload['username'], @payload['password']).to_json
 end
 
 error StandardError do |e|
